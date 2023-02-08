@@ -6,6 +6,7 @@ export(Resource) var enemy = null
 
 var current_player_health = 0
 var current_enemy_health = 0
+var is_defending = false
 
 func _ready():
 	set_health($EnemyContainer/ProgressBar, enemy.health, enemy.health)
@@ -33,6 +34,7 @@ func _input(_event):
 		emit_signal("textbox_closed")
 
 func display_text(text):
+	$ActionsPanel.hide()
 	$TextBox.show()
 	$TextBox/Label.text = text
 
@@ -40,14 +42,25 @@ func enemy_turn():
 	display_text("%s launches at you fiercely" % enemy.name)
 	yield(self, "textbox_closed")
 
-	current_player_health = max(0, current_player_health - enemy.damage)
-	set_health($PlayerPanel/PlayerData/ProgressBar, current_player_health, State.max_health)
+	if is_defending:
+		is_defending = false
 
-	$AnimationPlayer.play("shake")
-	yield($AnimationPlayer, "animation_finished")
+		$AnimationPlayer.play("mini_shake")
+		yield($AnimationPlayer, "animation_finished")
 
-	display_text("%s dealth %d damage!" % [enemy.name, enemy.damage])
-	yield(self, "textbox_closed")
+		display_text("You defended successfully!")
+		yield(self, "textbox_closed")
+	else:
+		current_player_health = max(0, current_player_health - enemy.damage)
+		set_health($PlayerPanel/PlayerData/ProgressBar, current_player_health, State.max_health)
+
+		$AnimationPlayer.play("shake")
+		yield($AnimationPlayer, "animation_finished")
+
+		display_text("%s dealth %d damage!" % [enemy.name, enemy.damage])
+		yield(self, "textbox_closed")
+
+	$ActionsPanel.show()
 
 func _on_Run_pressed():
 	display_text("Got away safely!")
@@ -68,5 +81,15 @@ func _on_Attack_pressed():
 
 	display_text("You dealt %d damage!" % State.damage)
 	yield(self, "textbox_closed")
+
+	enemy_turn()
+
+func _on_Defend_pressed():
+	is_defending = true
+
+	display_text("You are defending!")
+	yield(self, "textbox_closed")
+
+	yield(get_tree().create_timer(0.25), 'timeout')
 
 	enemy_turn()
