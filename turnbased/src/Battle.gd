@@ -4,10 +4,16 @@ signal textbox_closed
 
 export(Resource) var enemy = null
 
+var current_player_health = 0
+var current_enemy_health = 0
+
 func _ready():
 	set_health($EnemyContainer/ProgressBar, enemy.health, enemy.health)
 	set_health($PlayerPanel/PlayerData/ProgressBar, State.current_health, State.max_health)
 	$EnemyContainer/Enemy.texture = enemy.texture
+
+	current_player_health = State.current_health
+	current_enemy_health = enemy.health
 
 	$TextBox.hide()
 	$ActionsPanel.hide()
@@ -35,3 +41,11 @@ func _on_Run_pressed():
 	yield(self, "textbox_closed")
 	yield(get_tree().create_timer(0.25), 'timeout')
 	get_tree().quit()
+
+
+func _on_Attack_pressed():
+	display_text("You swing ya sword")
+	yield(self, "textbox_closed")
+
+	current_enemy_health = max(0, current_enemy_health - State.damage)
+	set_health($EnemyContainer/ProgressBar, current_enemy_health, enemy.health)
