@@ -60,6 +60,15 @@ func enemy_turn():
 		display_text("%s dealth %d damage!" % [enemy.name, enemy.damage])
 		yield(self, "textbox_closed")
 
+	if current_player_health <= 0:
+		$AnimationPlayer.play("player_died")
+		yield($AnimationPlayer, "animation_finished")
+
+		display_text("You dead.")
+		yield(self, "textbox_closed")
+		yield(get_tree().create_timer(0.25), 'timeout')
+		get_tree().quit()
+
 	$ActionsPanel.show()
 
 func _on_Run_pressed():
