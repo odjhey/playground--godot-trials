@@ -12,6 +12,10 @@ config_version=4
 
 run/main_scene="res://src/Battle.tscn"
 
+[autoload]
+
+State="*res://src/State.gd"
+
 [display]
 
 window/size/width=320
