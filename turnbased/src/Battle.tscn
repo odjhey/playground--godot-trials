@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://sprites/battleback1.png" type="Texture" id=1]
 [ext_resource path="res://sprites/Dragon.png" type="Texture" id=2]
@@ -41,6 +41,65 @@ border_width_top = 1
 border_width_right = 1
 border_width_bottom = 1
 border_color = Color( 1, 1, 1, 1 )
+
+[sub_resource type="Animation" id=7]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("EnemyContainer/Enemy:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Camera2D:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=8]
+resource_name = "enemy_damaged"
+length = 0.6
+tracks/0/type = "value"
+tracks/0/path = NodePath("EnemyContainer/Enemy:modulate")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ) ]
+}
+
+[sub_resource type="Animation" id=9]
+resource_name = "shake"
+length = 0.6
+tracks/0/type = "value"
+tracks/0/path = NodePath("Camera2D:position")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ), Vector2( -5, -6 ), Vector2( 9, -4 ), Vector2( -11, 10 ), Vector2( 19, 14 ), Vector2( 9, -4 ), Vector2( 0, 0 ) ]
+}
 
 [node name="Battle" type="Control"]
 anchor_left = 0.5
@@ -227,6 +286,15 @@ margin_top = 23.0
 margin_right = 299.0
 margin_bottom = 37.0
 text = ">"
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+anims/RESET = SubResource( 7 )
+anims/enemy_damaged = SubResource( 8 )
+anims/shake = SubResource( 9 )
+
+[node name="Camera2D" type="Camera2D" parent="."]
+anchor_mode = 0
+current = true
 
 [connection signal="pressed" from="ActionsPanel/Actions/Attack" to="." method="_on_Attack_pressed"]
 [connection signal="pressed" from="ActionsPanel/Actions/Run" to="." method="_on_Run_pressed"]

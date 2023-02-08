@@ -36,6 +36,19 @@ func display_text(text):
 	$TextBox.show()
 	$TextBox/Label.text = text
 
+func enemy_turn():
+	display_text("%s launches at you fiercely" % enemy.name)
+	yield(self, "textbox_closed")
+
+	current_player_health = max(0, current_player_health - enemy.damage)
+	set_health($PlayerPanel/PlayerData/ProgressBar, current_player_health, State.max_health)
+
+	$AnimationPlayer.play("shake")
+	yield($AnimationPlayer, "animation_finished")
+
+	display_text("%s dealth %d damage!" % [enemy.name, enemy.damage])
+	yield(self, "textbox_closed")
+
 func _on_Run_pressed():
 	display_text("Got away safely!")
 	yield(self, "textbox_closed")
@@ -49,3 +62,11 @@ func _on_Attack_pressed():
 
 	current_enemy_health = max(0, current_enemy_health - State.damage)
 	set_health($EnemyContainer/ProgressBar, current_enemy_health, enemy.health)
+
+	$AnimationPlayer.play("enemy_damaged")
+	yield($AnimationPlayer, "animation_finished")
+
+	display_text("You dealt %d damage!" % State.damage)
+	yield(self, "textbox_closed")
+
+	enemy_turn()
