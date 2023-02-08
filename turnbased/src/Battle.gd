@@ -1,14 +1,18 @@
 extends Control
 
-
 signal textbox_closed
 
+export(Resource) var enemy = null
+
 func _ready():
+	set_health($EnemyContainer/ProgressBar, enemy.health, enemy.health)
 	set_health($PlayerPanel/PlayerData/ProgressBar, State.current_health, State.max_health)
+	$EnemyContainer/Enemy.texture = enemy.texture
+
 	$TextBox.hide()
 	$ActionsPanel.hide()
 
-	display_text("A wild enemy appears!")
+	display_text("A wild %s appears!" % enemy.name.to_upper())
 	yield(self, "textbox_closed")
 	$ActionsPanel.show()
 
