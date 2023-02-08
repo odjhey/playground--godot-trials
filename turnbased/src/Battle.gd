@@ -82,7 +82,17 @@ func _on_Attack_pressed():
 	display_text("You dealt %d damage!" % State.damage)
 	yield(self, "textbox_closed")
 
-	enemy_turn()
+	if current_enemy_health == 0:
+		$AnimationPlayer.play("enemy_died")
+		yield($AnimationPlayer, "animation_finished")
+
+		display_text("%s was defeated!" % enemy.name)
+		yield(self, "textbox_closed")
+
+		yield(get_tree().create_timer(0.25), 'timeout')
+		get_tree().quit()
+	else:
+		enemy_turn()
 
 func _on_Defend_pressed():
 	is_defending = true

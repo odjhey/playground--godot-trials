@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=2]
+[gd_scene load_steps=16 format=2]
 
 [ext_resource path="res://sprites/battleback1.png" type="Texture" id=1]
 [ext_resource path="res://sprites/Dragon.png" type="Texture" id=2]
@@ -68,6 +68,18 @@ tracks/1/keys = {
 "update": 0,
 "values": [ Vector2( 0, 0 ) ]
 }
+tracks/2/type = "value"
+tracks/2/path = NodePath("EnemyContainer:modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ) ]
+}
 
 [sub_resource type="Animation" id=8]
 resource_name = "enemy_damaged"
@@ -83,6 +95,21 @@ tracks/0/keys = {
 "transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1 ),
 "update": 0,
 "values": [ Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ) ]
+}
+
+[sub_resource type="Animation" id=11]
+resource_name = "enemy_died"
+tracks/0/type = "value"
+tracks/0/path = NodePath("EnemyContainer:modulate")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0.1, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0 ) ]
 }
 
 [sub_resource type="Animation" id=10]
@@ -306,6 +333,7 @@ text = ">"
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 anims/RESET = SubResource( 7 )
 anims/enemy_damaged = SubResource( 8 )
+anims/enemy_died = SubResource( 11 )
 anims/mini_shake = SubResource( 10 )
 anims/shake = SubResource( 9 )
 
